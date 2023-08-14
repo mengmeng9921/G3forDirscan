@@ -214,7 +214,7 @@ def cmdline(known=False):
         '-r',
         '--requestype',
         help='-r get',
-        default="head",
+        default="get",
         type=str
     )
     parser.add_argument(
@@ -235,34 +235,51 @@ def main():
     opt = cmdline()
     Threads = opt.threads
     StatusCodeFilter = opt.statuscodefilter.split(",")
-    # 1.没有单个路径
-    if not opt.dic:
-        # 1.1 没有url字典
-        if not opt.urlfile:
-            url_dics(opt.url, opt.dicfile, opt.requestype)
-        # 1.2 有url字典
-        elif opt.urlfile:
-            urls_dics(opt.urlfile, opt.dicfile, opt.requestype)
-        # 1.3 参数错误，退出
+    try:
+        # 1.没有单个路径
+        if not opt.dic:
+            # 1.1 没有url字典
+            if not opt.urlfile:
+                url_dics(opt.url, opt.dicfile, opt.requestype)
+            # 1.2 有url字典
+            elif opt.urlfile:
+                urls_dics(opt.urlfile, opt.dicfile, opt.requestype)
+            # 1.3 参数错误，退出
+            else:
+                print("参数错误")
+                sys.exit()
+        # 2.有单个路径
+        elif opt.dic:
+            # 2.1 没有url字典
+            if not opt.urlfile:
+                url_dic(opt.url, opt.dic, opt.requestype)
+            # 2.2 有url字典
+            elif opt.urlfile:
+                urls_dic(opt.urlfile, opt.dic, opt.requestype)
+            # 2.3 参数错误，退出
+            else:
+                print("参数错误")
+                sys.exit()
         else:
             print("参数错误")
             sys.exit()
-    # 2.有单个路径
-    elif opt.dic:
-        # 2.1 没有url字典
-        if not opt.urlfile:
-            url_dic(opt.url, opt.dic, opt.requestype)
-        # 2.2 有url字典
-        elif opt.urlfile:
-            urls_dic(opt.urlfile, opt.dic, opt.requestype)
-        # 2.3 参数错误，退出
-        else:
-            print("参数错误")
-            sys.exit()
-    else:
-        print("参数错误")
-        sys.exit()
-    log.close()
+        log.close()
+    except:
+        print(r"""
+  options:
+  -h, --help            show this help message and exit
+  -u URL, --url URL     -u http://test.com
+  -uf URLFILE, --urlfile URLFILE
+                        -uf 1.txt
+  -d DIC, --dic DIC     -d "/index.php"
+  -df DICFILE, --dicfile DICFILE
+                        -df 1.txt
+  -t THREADS, --threads THREADS
+                        -t 10
+  -r REQUESTYPE, --requestype REQUESTYPE
+                        -r get
+  -sf STATUSCODEFILTER, --statuscodefilter STATUSCODEFILTER
+                        -sf "200,403""")
 
 
 if __name__ == '__main__':
