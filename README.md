@@ -34,3 +34,7 @@ python3 G3forDirscan.py -u URL -sf "200,404"
 7.指定线程
 
 python3 G3forDirscan.py -u URL -t 20
+
+8.指定请求方式
+
+python3 G3forDirscan.py -u URL -r head
