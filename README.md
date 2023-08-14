@@ -1,6 +1,7 @@
 # G3forDirscan
 多线程目录扫描工具
- 
+
+字典可使用Dirsearch的字典：https://github.com/maurosoria/dirsearch/blob/master/db/dicc.txt
 
 0.使用帮助
 
