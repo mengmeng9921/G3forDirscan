@@ -29,7 +29,7 @@ python3 G3forDirscan.py -uf "url.txt" -df "dicc.txt"
 
 6.只获取单一状态码的路径
 
-python3 G3forDirscan.py -u URL -sf 200
+python3 G3forDirscan.py -u URL -sf "200,404"
 
 7.指定线程
 
