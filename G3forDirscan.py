@@ -14,7 +14,7 @@ Blue = Fore.BLUE
 Reset = Fore.RESET
 
 Threads = 50
-StatusCodeFilter = ""
+StatusCodeFilter = []
 log = open("log.txt", "a", encoding="gbk")
 
 
@@ -29,7 +29,7 @@ def url_dic(url, dic, request_type):
     status_code, resp_len, path = send_request(path, request_type)
     if not StatusCodeFilter:
         printfunc(status_code, resp_len, path)
-    elif status_code == StatusCodeFilter:
+    elif status_code in StatusCodeFilter:
         printfunc(status_code, resp_len, path)
     else:
         pass
@@ -101,12 +101,12 @@ def thread_run(path_queue, request_type):
         try:
             status_code, resp_len, path = send_request(path_queue.get(), request_type)
             # result = f"{Yellow}{status_code}{Reset}\t{resp_len}\t{path}"
-            if not StatusCodeFilter:
+            if len(StatusCodeFilter) == 0:
                 printfunc(status_code, resp_len, path)
-            elif status_code == StatusCodeFilter:
+            elif str(status_code) in StatusCodeFilter:
                 printfunc(status_code, resp_len, path)
             else:
-                pass
+                print(StatusCodeFilter)
             # printfunc(status_code, resp_len, path)
             # print(result)
         except:
@@ -220,9 +220,9 @@ def cmdline(known=False):
     parser.add_argument(
         '-sf',
         '--statuscodefilter',
-        help='-sf 200',
-        default= None,
-        type=int
+        help='-sf "200,403"',
+        default= "",
+        type=str
     )
     opt = parser.parse_args()
     return opt
@@ -234,7 +234,7 @@ def main():
     global StatusCodeFilter
     opt = cmdline()
     Threads = opt.threads
-    StatusCodeFilter = opt.statuscodefilter
+    StatusCodeFilter = opt.statuscodefilter.split(",")
     # 1.没有单个路径
     if not opt.dic:
         # 1.1 没有url字典
